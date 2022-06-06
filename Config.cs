@@ -1,7 +1,4 @@
-﻿using ApiActions.Pipelines;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ApiActions;
 
@@ -14,10 +11,5 @@ public static class Config
         options.Filters.Add(typeof(NoContentFilter));
         options.Filters.Add(typeof(ExceptionFilter));
         return options;
-    }
-
-    public static IServiceCollection AddApiActions(this IServiceCollection services)
-    {
-        return services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
     }
 }
