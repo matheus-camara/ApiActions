@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Notify;
 
@@ -8,21 +9,24 @@ namespace ApiActions;
 
 public class ExceptionFilter : IExceptionFilter
 {
-    private static readonly Notification DefaultError = new
+    private Notification DefaultError => new
     (
         "Internal Server Error",
         string.Empty,
-        "Ocorreu um erro inesperado, entre em contato com o administrador"
+        _localizer.GetString("InternalServerError")
     );
 
     private readonly IHostingEnvironment _env;
 
     private readonly ILogger<ExceptionFilter> _logger;
 
-    public ExceptionFilter(IHostingEnvironment env, ILogger<ExceptionFilter> logger)
+    private readonly IStringLocalizer<ExceptionFilter> _localizer;
+
+    public ExceptionFilter(IHostingEnvironment env, ILogger<ExceptionFilter> logger, IStringLocalizer<ExceptionFilter> localizer)
     {
         _env = env;
         _logger = logger;
+        _localizer = localizer;
     }
 
     public void OnException(ExceptionContext context)
